@@ -44,8 +44,27 @@ app.get("/products", (req, res) => {
     });
  });
 
+
+
+  app.delete("/products/:id", ( req, res) => {
+    const {id} = req.params;
+    products = products.filter((products) => products.id !== parseInt(id));
+    res.status(204).send();
+ });
+ 
+ app.put("/products/:id", (req, res) => {
+    const {id} = req.params;
+    const updatedProduct = req.body;
+    const index = products.findIndex((product) => product.id === parseInt(id));
+    if (index !== -1) {
+        products[index] = { ...products[index], ...updatedProduct };
+        res.json(products[index]);
+    }else{
+        res.status(404).json ({message: "product not found"});
+    }
+ });
+
  app.listen(5050, () => {
     console.log("Server is running on port 5050")
  });
 
- 
